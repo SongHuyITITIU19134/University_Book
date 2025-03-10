@@ -1,52 +1,49 @@
 import type { Metadata } from "next";
+import "./globals.css";
+// import { Toaster } from "@/components/ui/toaster";
+
 import localFont from "next/font/local";
 import { ReactNode } from "react";
-import "./globals.css";
+// import { auth } from "@/auth";
 
 const ibmPlexSans = localFont({
   src: [
-    {
-      path: '/fonts/IBMPlexSans-Regular.ttf', weight: '400', style: 'normal'
-    },
-    {
-      path: '/fonts/IBMPlexSans-Medium.ttf', weight: '500', style: 'normal'
-    },
-    {
-      path: '/fonts/IBMPlexSans-SemiBold.ttf', weight: '600', style: 'normal'
-    },
-    {
-      path: '/fonts/IBMPlexSans-Bold.ttf', weight: '700', style: 'normal'
-    }
-
-  ]
+    { path: "/fonts/IBMPlexSans-Regular.ttf", weight: "400", style: "normal" },
+    { path: "/fonts/IBMPlexSans-Medium.ttf", weight: "500", style: "normal" },
+    { path: "/fonts/IBMPlexSans-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "/fonts/IBMPlexSans-Bold.ttf", weight: "700", style: "normal" },
+  ],
 });
 
 const bebasNeue = localFont({
-  src: [{
-    path: "/fonts/BebasNeue-Regular.ttf", weight: "400", style: 'normal'
-  }],
-  variable: "--bebas-neue"
+  src: [
+    { path: "/fonts/BebasNeue-Regular.ttf", weight: "400", style: "normal" },
+  ],
+  variable: "--bebas-neue",
 });
 
 export const metadata: Metadata = {
-  title: "BookWise By Huy",
-  description: "BookWise is a book review website library management solution.",
+  title: "BookWise",
+  description:
+    "BookWise is a book borrowing university library management solution.",
 };
 
-const RootLayout = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  // const session = await auth();
+
   return (
     <html lang="en">
+      {/* <SessionProvider session={session}> */}
       <body
-        className={`${ibmPlexSans.className} ${ibmPlexSans.className} antialiased`}
+        className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
       >
         {children}
+
+        {/* <Toaster /> */}
       </body>
+      {/* </SessionProvider> */}
     </html>
   );
-}
+};
 
-export default RootLayout
+export default RootLayout;
