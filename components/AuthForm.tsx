@@ -12,10 +12,12 @@ import { Input } from "@/components/ui/input";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constans";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 import { DefaultValues, FieldValues, Path, SubmitHandler, useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 import { ZodType } from "zod";
 import ImageUpload from "./ImageUpload";
-
 
 interface Props<T extends FieldValues> {
     schema: ZodType<T>;
@@ -27,6 +29,7 @@ interface Props<T extends FieldValues> {
 
 const AuthForm = <T extends FieldValues>({ type, schema, defaultValues, onSubmit }: Props<T>) => {
 
+    const router = useRouter();
     const isSignIn = type === "SIGN_IN";
 
     const form: UseFormReturn<T> = useForm({
@@ -35,7 +38,22 @@ const AuthForm = <T extends FieldValues>({ type, schema, defaultValues, onSubmit
     })
 
 
-    const handleSubmit: SubmitHandler<T> = async (data) => { }
+    const handleSubmit: SubmitHandler<T> = async (data) => {
+        const result = await onSubmit(data);
+        if (result.success) {
+            toast("Success", {
+                description: isSignIn
+                    ? "You have successfully signed in."
+                    : "You have successfully signed up."
+            });
+            router.push('/')
+        }
+        else {
+            toast(`Error ${isSignIn ? "signing in" : "signing up"}`, {
+                description: result.error ?? "An error occurred",
+            });
+        }
+    }
 
     return (
         <div className="flex flex-col gap-4">
