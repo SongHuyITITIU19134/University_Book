@@ -3,7 +3,6 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import "./globals.css";
 
@@ -32,7 +31,6 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-  if (!session) redirect("/sign-in")
 
   return (
     <html lang="en">
@@ -40,8 +38,8 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
         <body
           className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
         >
-          {children}
 
+          {children}
           <Toaster />
         </body>
       </SessionProvider>
