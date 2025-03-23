@@ -23,7 +23,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  reactStrictMode: true,
+  serverRuntimeConfig: {
+    // Will only be available on the server side
+    nodeModules: true,
+  },
 };
 
 export default nextConfig;
