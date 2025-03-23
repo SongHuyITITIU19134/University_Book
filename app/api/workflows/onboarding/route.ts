@@ -1,4 +1,11 @@
 import { serve } from "@upstash/workflow/nextjs"
+// Use a polyfill for crypto
+import CryptoJS from 'crypto-js'
+
+// Ensure CryptoJS is available globally if needed
+if (typeof global !== 'undefined') {
+  ; (global as any).CryptoJS = CryptoJS
+}
 
 type InitialData = {
   email: string
