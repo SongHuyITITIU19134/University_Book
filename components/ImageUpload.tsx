@@ -11,23 +11,31 @@ const { env: {
     publicKey,
     urlEndpoint } } } = config;
 
-const authenticator = async () => {
-  try {
-    const response = await fetch(`${config.env.apiEndPoint}/api/auth/imagekit`)
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Request failed with status ${response.status}: ${errorText}`)
-    }
-
-    const data = await response.json();
-    const { signature, expire, token } = data;
-    return { token, signature, expire }
-
-  } catch (error: any) {
-    toast.error(`Authentication failed: ${error.message}`);
-    throw new Error(`Authentication failed: ${error.message}`);
-  }
-}
+    const authenticator = async () => {
+      try {
+        console.log("Fetching authentication from:", `${config.env.apiEndPoint}/api/auth/imagekit`);
+    
+        const response = await fetch(`${config.env.apiEndPoint}/api/auth/imagekit`);
+        console.log("Raw response:", response);
+    
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+        }
+    
+        const data = await response.json();
+        console.log("Authentication data received:", data);
+    
+        const { signature, expire, token } = data;
+        return { token, signature, expire };
+    
+      } catch (error: any) {
+        toast.error(`Authentication failed: ${error.message}`);
+        console.error("Authentication failed:", error);
+        throw new Error(`Authentication failed: ${error.message}`);
+      }
+    };
+    
 
 interface ImageUploadProps {
   onFileChange: (filePath: string) => void;
