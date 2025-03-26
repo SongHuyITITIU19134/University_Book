@@ -9,6 +9,8 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import ratelimit from '../ratelimit';
 
+
+
 export const signInWithCredentials = async (
     params: Pick<AuthCredentials, "email" | "password">,
 ) => {
@@ -63,7 +65,11 @@ export const signUp = async (params: AuthCredentials) => {
             universityId,
             password: hashedPassword,
         })
-        // await signInWithCredentials({ email, password })
+
+
+
+
+        await signInWithCredentials({ email, password })
         return { success: true }
     } catch (error) {
         console.log(error, "signup error")
