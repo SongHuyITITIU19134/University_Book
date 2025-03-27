@@ -1,6 +1,6 @@
 {
-  "id": "5381d02e-7e55-48fb-a3c3-a980361db357",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "3ad0bf14-c5d6-44be-b295-e6529ad94388",
+  "prevId": "5381d02e-7e55-48fb-a3c3-a980361db357",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -148,14 +148,6 @@
           "type": "date",
           "primaryKey": false,
           "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "borrow_status",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'BORROWED'"
         },
         "created_at": {
           "name": "created_at",

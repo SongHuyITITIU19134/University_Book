@@ -22,6 +22,8 @@ import ColorPicker from "../ColorPicker";
 
 import { createBook } from "@/lib/admin/actions/book";
 
+type Book = z.infer<typeof bookSchema>;
+
 interface Props extends Partial<Book> {
     type?: "create" | "update";
 }
@@ -32,31 +34,37 @@ const BookForm = ({ type, ...book }: Props) => {
     const form = useForm<z.infer<typeof bookSchema>>({
         resolver: zodResolver(bookSchema),
         defaultValues: {
-            title: "",
-            description: "",
-            author: "",
-            genre: "",
-            rating: 1,
-            totalCopies: 1,
-            coverUrl: "",
-            coverColor: "",
-            videoUrl: "",
-            summary: "",
+            title: book.title || "",
+            description: book.description || "",
+            author: book.author || "",
+            genre: book.genre || "",
+            rating: book.rating || 1,
+            totalCopies: book.totalCopies || 1,
+            coverUrl: book.coverUrl || "",
+            coverColor: book.coverColor || "",
+            videoUrl: book.videoUrl || "",
+            summary: book.summary || "",
         },
     });
 
     const onSubmit = async (values: z.infer<typeof bookSchema>) => {
-        const result = await createBook(values);
+        try {
+            const result = await createBook(values);
 
-        if (result.success) {
-            toast("Success", {
-                description: "Book created successfully",
-            });
+            if (result.success) {
+                toast.success("Success", {
+                    description: "Book created successfully"
+                });
 
-            router.push(`/admin/books/${result.data.id}`);
-        } else {
-            toast("Error", {
-                description: result.message
+                router.push(`/admin/books/${result.data.id}`);
+            } else {
+                toast.error("Error", {
+                    description: result.message,
+                });
+            }
+        } catch (error) {
+            toast.error("Error", {
+                description: "An unexpected error occurred"
             });
         }
     };
@@ -279,11 +287,17 @@ const BookForm = ({ type, ...book }: Props) => {
                     )}
                 />
 
-                <Button type="submit" className="book-form_btn text-white">
-                    Add Book to Library
+                <Button
+                    type="submit"
+                    className="book-form_btn text-white"
+                    disabled={form.formState.isSubmitting}
+                >
+                    {type === "create" ? "Add Book to Library" : "Update Book"}
                 </Button>
             </form>
         </Form>
     );
 };
+
+
 export default BookForm;
